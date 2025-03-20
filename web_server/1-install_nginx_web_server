@@ -4,8 +4,9 @@
 #+    Returns a page containing "Holberton School" when queried
 #++    at the root with a curl GET request.
 
-apt-get update -y
-apt-get install nginx -y 
+sudo apt-get update -y
+sudo apt-get install nginx -y 
+sudo apt-get install ufw -y
 sudo ufw allow 'Nginx HTTP'
-sh -c 'echo "Holberton School" > /var/www/html/index.html'
-service nginx restart
+sudo sh -c 'echo "Holberton School" > /var/www/html/index.html'
+sudo service nginx restart
