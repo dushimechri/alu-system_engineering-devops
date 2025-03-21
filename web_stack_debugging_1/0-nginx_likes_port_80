@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# This script ensures Nginx is running and listening on port 80.
+
+# Install Nginx if not already installed
+if ! command -v nginx &> /dev/null; then
+    apt-get update -y
+    apt-get install -y nginx
+fi
+
+# Ensure Nginx is configured to listen on port 80
+if ! grep -q "listen 80;" /etc/nginx/sites-available/default; then
+    sed -i '/server {/a \    listen 80;\n    server_name _;' /etc/nginx/sites-available/default
+fi
+
+# Test the Nginx configuration
+if sudo nginx -t; then
+    # Restart Nginx if the configuration is valid
+    sudo systemctl restart nginx
+else
+    echo "Nginx configuration test failed. Please check the configuration files."
+    exit 1
+fi
+
+# Ensure Nginx is running
+if ! systemctl is-active --quiet nginx; then
+    sudo systemctl start nginx
+fi
+
+echo "Nginx is now running and listening on port 80."
